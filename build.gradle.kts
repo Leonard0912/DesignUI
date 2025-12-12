@@ -1,48 +1,23 @@
-import gg.essential.gradle.multiversion.StripReferencesTransform.Companion.registerStripReferencesAttribute
-import gg.essential.gradle.util.*
-import gg.essential.gradle.util.RelocationTransform.Companion.registerRelocationAttribute
-
 plugins {
     `java-library`
-    id("gg.essential.defaults")
-    id("gg.essential.defaults.maven-publish")
+    `maven-publish`
 }
 
 group = "gg.essential"
-version = versionFromBuildIdAndBranch()
+version = "1.0.0-SNAPSHOT"
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(8))
 
-val internal by configurations.creating {
-    val relocated = registerRelocationAttribute("internal-relocated") {
-        relocate("org.dom4j", "gg.essential.elementa.impl.dom4j")
-        relocate("org.commonmark", "gg.essential.elementa.impl.commonmark")
-        remapStringsIn("org.dom4j.DocumentFactory")
-        remapStringsIn("org.commonmark.internal.util.Html5Entities")
-    }
-    attributes { attribute(relocated, true) }
-}
-
-val common = registerStripReferencesAttribute("common") {
-    excludes.add("net.minecraft")
+repositories {
+    mavenCentral()
 }
 
 dependencies {
-    compileOnly(libs.jetbrains.annotations)
-
-    internal(libs.commonmark)
-    internal(libs.commonmark.ext.gfm.strikethrough)
-    internal(libs.commonmark.ext.ins)
-    internal(libs.dom4j)
-    implementation(prebundle(internal))
-
+    compileOnly("org.jetbrains:annotations:24.0.0")
+    compileOnly("org.commonmark:commonmark:0.21.0")
+    compileOnly("org.dom4j:dom4j:2.1.4")
     compileOnly(project(":mc-stubs"))
-    // Depending on LWJGL3 instead of 2 so we can choose opengl bindings only
     compileOnly("org.lwjgl:lwjgl-opengl:3.3.1")
-    // Depending on 1.8.9 for all of these because that's the oldest version we support
-    compileOnly(libs.universalcraft.forge10809) {
-        attributes { attribute(common, true) }
-    }
     compileOnly("com.google.code.gson:gson:2.2.4")
 }
 
@@ -53,13 +28,13 @@ tasks.processResources {
     }
 }
 
-tasks.jar {
-    dependsOn(internal)
-    from({ internal.map { zipTree(it) } })
-}
-
 java.withSourcesJar()
 
-publishing.publications.named<MavenPublication>("maven") {
-    artifactId = "elementa"
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+            artifactId = "elementa"
+        }
+    }
 }

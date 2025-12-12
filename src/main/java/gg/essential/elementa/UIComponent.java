@@ -24,8 +24,8 @@ public abstract class UIComponent extends Observable implements ReferenceHolder 
     private UIComponent parent;
     private boolean hasParentSet = false;
     private UIConstraints constraints;
-    private boolean isInitialized = false;
-    Window cachedWindow = null;
+    protected boolean isInitialized = false;
+    public Window cachedWindow = null;
 
     public UIComponent() {
         this.constraints = new UIConstraints(this);

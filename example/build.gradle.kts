@@ -1,13 +1,14 @@
 plugins {
     `java-library`
     application
-    id("gg.essential.defaults.repo")
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
-    implementation(libs.universalcraft.standalone)
     implementation(project(":"))
-    implementation(project(":unstable:layoutdsl"))
 }
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(8))

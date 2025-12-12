@@ -10,13 +10,15 @@ import gg.essential.elementa.constraints.SuperConstraint;
 public interface ConstraintDebugger {
     float evaluate(SuperConstraint<Float> constraint, ConstraintType type, UIComponent component);
 
-    static ConstraintDebugger constraintDebugger = null;
+    class Holder {
+        private static ConstraintDebugger constraintDebugger = null;
+    }
 
     static ConstraintDebugger getConstraintDebugger() {
-        return constraintDebugger;
+        return Holder.constraintDebugger;
     }
 
     static void setConstraintDebugger(ConstraintDebugger debugger) {
-        constraintDebugger = debugger;
+        Holder.constraintDebugger = debugger;
     }
 }

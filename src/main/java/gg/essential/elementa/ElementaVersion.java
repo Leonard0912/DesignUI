@@ -1,14 +1,10 @@
 package gg.essential.elementa;
 
-import gg.essential.elementa.components.UIText;
-import gg.essential.elementa.components.UIWrappedText;
 import gg.essential.elementa.components.UpdateFunc;
 import gg.essential.elementa.components.Window;
 import gg.essential.elementa.constraints.SuperConstraint;
 import gg.essential.elementa.constraints.animation.AnimationComponent;
 import gg.essential.elementa.effects.Effect;
-import gg.essential.universal.render.URenderPipeline;
-import gg.essential.universal.shader.BlendState;
 
 import java.util.function.Supplier;
 
@@ -109,26 +105,26 @@ public enum ElementaVersion {
 
     // Internal version references for comparison
     @SuppressWarnings("deprecation")
-    static final ElementaVersion v0 = V0;
+    public static final ElementaVersion v0 = V0;
     @SuppressWarnings("deprecation")
-    static final ElementaVersion v1 = V1;
+    public static final ElementaVersion v1 = V1;
     @SuppressWarnings("deprecation")
-    static final ElementaVersion v2 = V2;
+    public static final ElementaVersion v2 = V2;
     @SuppressWarnings("deprecation")
-    static final ElementaVersion v3 = V3;
+    public static final ElementaVersion v3 = V3;
     @SuppressWarnings("deprecation")
-    static final ElementaVersion v4 = V4;
+    public static final ElementaVersion v4 = V4;
     @SuppressWarnings("deprecation")
-    static final ElementaVersion v5 = V5;
+    public static final ElementaVersion v5 = V5;
     @SuppressWarnings("deprecation")
-    static final ElementaVersion v6 = V6;
+    public static final ElementaVersion v6 = V6;
     @SuppressWarnings("deprecation")
-    static final ElementaVersion v7 = V7;
+    public static final ElementaVersion v7 = V7;
     @SuppressWarnings("deprecation")
-    static final ElementaVersion v8 = V8;
+    public static final ElementaVersion v8 = V8;
     @SuppressWarnings("deprecation")
-    static final ElementaVersion v9 = V9;
-    static final ElementaVersion v10 = V10;
+    public static final ElementaVersion v9 = V9;
+    public static final ElementaVersion v10 = V10;
 
     private static ElementaVersion active = v0;
 
@@ -144,7 +140,7 @@ public enum ElementaVersion {
         return active;
     }
 
-    static void setActive(ElementaVersion version) {
+    public static void setActive(ElementaVersion version) {
         active = version;
     }
 
