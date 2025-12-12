@@ -1,9 +1,8 @@
 import gg.essential.gradle.multiversion.StripReferencesTransform.Companion.registerStripReferencesAttribute
-import gg.essential.gradle.util.setJvmDefault
 import gg.essential.gradle.util.versionFromBuildIdAndBranch
 
 plugins {
-    kotlin("jvm")
+    `java-library`
     id("gg.essential.defaults")
     id("gg.essential.defaults.maven-publish")
 }
@@ -13,7 +12,6 @@ group = "gg.essential"
 
 dependencies {
     compileOnly(project(":"))
-    compileOnly(libs.kotlinx.coroutines.core)
 
     val common = registerStripReferencesAttribute("common") {
         excludes.add("net.minecraft")
@@ -22,7 +20,8 @@ dependencies {
         attributes { attribute(common, true) }
     }
 
-    testImplementation(kotlin("test"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
     testImplementation(project(":"))
 }
 
@@ -30,11 +29,7 @@ tasks.test {
     useJUnitPlatform()
 }
 
-tasks.compileKotlin.setJvmDefault("all")
-
-kotlin.jvmToolchain {
-    (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(8))
-}
+java.toolchain.languageVersion.set(JavaLanguageVersion.of(8))
 
 java.withSourcesJar()
 

@@ -1,12 +1,9 @@
 import gg.essential.gradle.multiversion.StripReferencesTransform.Companion.registerStripReferencesAttribute
 import gg.essential.gradle.util.*
 import gg.essential.gradle.util.RelocationTransform.Companion.registerRelocationAttribute
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.9.23"
-    id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.8.0"
-    id("org.jetbrains.dokka") version "1.9.20"
+    `java-library`
     id("gg.essential.defaults")
     id("gg.essential.defaults.maven-publish")
 }
@@ -14,17 +11,7 @@ plugins {
 group = "gg.essential"
 version = versionFromBuildIdAndBranch()
 
-kotlin.jvmToolchain {
-    (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(8))
-}
-
-tasks.withType<KotlinCompile> {
-    setJvmDefault("all-compatibility")
-    kotlinOptions {
-        languageVersion = "1.6"
-        apiVersion = "1.6"
-    }
-}
+java.toolchain.languageVersion.set(JavaLanguageVersion.of(8))
 
 val internal by configurations.creating {
     val relocated = registerRelocationAttribute("internal-relocated") {
@@ -41,8 +28,6 @@ val common = registerStripReferencesAttribute("common") {
 }
 
 dependencies {
-    compileOnly(libs.kotlin.stdlib.jdk8)
-    compileOnly(libs.kotlin.reflect)
     compileOnly(libs.jetbrains.annotations)
 
     internal(libs.commonmark)
@@ -71,11 +56,6 @@ tasks.processResources {
 tasks.jar {
     dependsOn(internal)
     from({ internal.map { zipTree(it) } })
-}
-
-apiValidation {
-    ignoredProjects.addAll(subprojects.map { it.name })
-    nonPublicMarkers.add("org.jetbrains.annotations.ApiStatus\$Internal")
 }
 
 java.withSourcesJar()

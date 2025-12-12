@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm")
+    `java-library`
     application
     id("gg.essential.defaults.repo")
 }
@@ -10,8 +10,8 @@ dependencies {
     implementation(project(":unstable:layoutdsl"))
 }
 
-kotlin.jvmToolchain(8)
+java.toolchain.languageVersion.set(JavaLanguageVersion.of(8))
 
 application {
-    mainClass.set("gg.essential.elementa.example.MainKt")
+    mainClass.set("gg.essential.elementa.example.Main")
 }
